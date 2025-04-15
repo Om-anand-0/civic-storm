@@ -25,6 +25,7 @@ import { useState } from "react";
 import { Loader2, UploadCloud } from "lucide-react";
 import { useReports } from "@/context/ReportContext";
 import { useNavigate } from "react-router-dom";
+import { IssueType, HazardType } from "@/types";
 
 // Form schema
 const formSchema = z.object({
@@ -68,13 +69,18 @@ export function ReportForm({ defaultType = "civic" }: ReportFormProps) {
     setIsSubmitting(true);
     
     try {
-      // Fix: Pass all required fields from values directly, ensuring none are optional
+      // Convert the string reportType to the appropriate type based on the report type
+      const typedReportType = values.type === "civic" 
+        ? values.reportType as IssueType 
+        : values.reportType as HazardType;
+        
+      // Pass all required fields and ensure proper typing
       addReport({
         type: values.type,
         title: values.title,
         description: values.description,
         location: values.location,
-        reportType: values.reportType,
+        reportType: typedReportType,
         imageUrl: imagePreview || undefined,
       });
       
