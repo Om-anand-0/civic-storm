@@ -68,8 +68,13 @@ export function ReportForm({ defaultType = "civic" }: ReportFormProps) {
     setIsSubmitting(true);
     
     try {
+      // Fix: Pass all required fields from values directly, ensuring none are optional
       addReport({
-        ...values,
+        type: values.type,
+        title: values.title,
+        description: values.description,
+        location: values.location,
+        reportType: values.reportType,
         imageUrl: imagePreview || undefined,
       });
       
